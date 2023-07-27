@@ -9,6 +9,14 @@ class Despesa{
        this.valor = valor
     }
 
+    validarDados(){
+        for (let i in this) {
+            if (this[i] == undefined || this[i] == '' || this[i] == null) {
+               return false;                
+            }
+        }
+        return true;
+    }
 }
 
 //classe Bd
@@ -21,7 +29,6 @@ class Bd{
         }
     }
 
-
     getProximoId(){
         let proximoId = localStorage.getItem('id')
         return parseInt(proximoId)+1
@@ -31,12 +38,9 @@ class Bd{
        let id =  this.getProximoId()
         localStorage.setItem(id, JSON.stringify(d))
         localStorage.setItem('id', id)
-    }
-    
+    }    
 }
-
 let bd = new Bd();
-
 
 //fora da classe
 function cadastrarDespesa(){
@@ -47,7 +51,13 @@ function cadastrarDespesa(){
     let descricao = document.getElementById('descricao');
     let valor = document.getElementById('valor');
     let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value);
-    bd.gravar(despesa); //interessante que nao importou nada pra usar aqui, apenas chamou com  classe
+   
+    if(despesa.validarDados()){
+      //bd.gravar(despesa); //interessante que nao importou nada pra usar aqui, apenas chamou com  classe
+      alert('Salvo com Sucesso')
+   }else{
+      alert('Dados incompletos. Revise-os!')
+   }
 }
 
  
