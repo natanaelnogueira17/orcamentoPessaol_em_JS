@@ -53,11 +53,11 @@ function cadastrarDespesa(){
     let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value);
    
     if(despesa.validarDados()){
-      //bd.gravar(despesa); //interessante que nao importou nada pra usar aqui, apenas chamou com  classe
-      alert('Salvo com Sucesso')
-   }else{
-      alert('Dados incompletos. Revise-os!')
-   }
+      bd.gravar(despesa); //interessante que nao importou nada pra usar aqui, apenas chamou com  classe
+      $('#sucessoGravacao').modal('show') 
+       }else{
+		$('#erroGravacao').modal('show') 
+       }
 }
 
  
