@@ -55,23 +55,53 @@
             return despesas            
         }
 
-        pesquisarFiltro(p){
-            console.log(p)
+        pesquisarFiltro(filtroDespesa){
+            let todasDespesas = Array()
+            todasDespesas = this.listar()
+            console.log( todasDespesas)
+            console.log(filtroDespesa);
+
+            if(filtroDespesa.ano != ''){
+                todasDespesas = todasDespesas.filter(d => d.ano == filtroDespesa.ano)
+            }
+            if(filtroDespesa.mes != ''){
+                todasDespesas = todasDespesas.filter(d => d.mes == filtroDespesa.mes)
+            }
+            if(filtroDespesa.dia != ''){
+                todasDespesas = todasDespesas.filter(d => d.dia == filtroDespesa.dia)
+            }
+            if(filtroDespesa.tipo != ''){
+                todasDespesas = todasDespesas.filter(d => d.tipo == filtroDespesa.tipo)
+            }
+            if(filtroDespesa.descricao != ''){
+                todasDespesas = todasDespesas.filter(d => d.descricao == filtroDespesa.descricao)
+            }
+            if(filtroDespesa.valor != ''){
+                todasDespesas = todasDespesas.filter(d => d.valor == filtroDespesa.valor)
+            }            
+            console.log( todasDespesas)
         }
     }
     //instanciando um novo BD
     let bd = new Bd(); 
 
     //Controller // bean no java 
-    function cadastrarDespesa(){
+
+
+    function recuperandoDadosTela(){
         let dia = document.getElementById('dia');
         let mes = document.getElementById('mes');
         let ano = document.getElementById('ano');
         let tipo = document.getElementById('tipo');
         let descricao = document.getElementById('descricao');
         let valor = document.getElementById('valor');
+
+    }
+
+    function cadastrarDespesa(){
+        
+        recuperandoDadosTela()
         let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value);
-       
         if(despesa.validarDados()){
           bd.gravar(despesa)
           document.getElementById('modal_titulo').innerHTML  = 'Registro inserido com sucesso!'
@@ -122,12 +152,7 @@
     }
 
     function pesquisarDespesa(){
-        let dia = document.getElementById('dia')
-        let mes = document.getElementById('mes')
-        let ano = document.getElementById('ano')
-        let tipo = document.getElementById('tipo')
-        let descricao = document.getElementById('descricao')
-        let valor = document.getElementById('valor')
+        recuperandoDadosTela()
         let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value)
         bd.pesquisarFiltro(despesa)
 
