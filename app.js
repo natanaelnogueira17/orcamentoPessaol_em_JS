@@ -56,30 +56,28 @@
         }
 
         pesquisarFiltro(filtroDespesa){
-            let todasDespesas = Array()
-            todasDespesas = this.listar()
-            console.log( todasDespesas)
-            console.log(filtroDespesa);
+            let todasDespesasFiltradas = Array()
+            todasDespesasFiltradas = this.listar()          
 
             if(filtroDespesa.ano != ''){
-                todasDespesas = todasDespesas.filter(d => d.ano == filtroDespesa.ano)
+                todasDespesasFiltradas = todasDespesasFiltradas.filter(d => d.ano == filtroDespesa.ano)
             }
             if(filtroDespesa.mes != ''){
-                todasDespesas = todasDespesas.filter(d => d.mes == filtroDespesa.mes)
+                todasDespesasFiltradas = todasDespesasFiltradas.filter(d => d.mes == filtroDespesa.mes)
             }
             if(filtroDespesa.dia != ''){
-                todasDespesas = todasDespesas.filter(d => d.dia == filtroDespesa.dia)
+                todasDespesasFiltradas = todasDespesasFiltradas.filter(d => d.dia == filtroDespesa.dia)
             }
             if(filtroDespesa.tipo != ''){
-                todasDespesas = todasDespesas.filter(d => d.tipo == filtroDespesa.tipo)
+                todasDespesasFiltradas = todasDespesasFiltradas.filter(d => d.tipo == filtroDespesa.tipo)
             }
             if(filtroDespesa.descricao != ''){
-                todasDespesas = todasDespesas.filter(d => d.descricao == filtroDespesa.descricao)
+                todasDespesasFiltradas = todasDespesasFiltradas.filter(d => d.descricao == filtroDespesa.descricao)
             }
             if(filtroDespesa.valor != ''){
-                todasDespesas = todasDespesas.filter(d => d.valor == filtroDespesa.valor)
+                todasDespesasFiltradas = todasDespesasFiltradas.filter(d => d.valor == filtroDespesa.valor)
             }            
-            console.log( todasDespesas)
+            return todasDespesasFiltradas
         }
     }
     //instanciando um novo BD
@@ -141,12 +139,10 @@
                 case '4' : d.tipo = 'Saúde'
                 break
             }  
-
             linha.insertCell(0).innerHTML= `${d.dia}/${d.mes}/${d.ano}`
             linha.insertCell(1).innerHTML = d.tipo         
             linha.insertCell(2).innerHTML = d.descricao
             linha.insertCell(3).innerHTML = d.valor
-
         })
 
     }
@@ -154,8 +150,24 @@
     function pesquisarDespesa(){
         recuperandoDadosTela()
         let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value)
-        bd.pesquisarFiltro(despesa)
+        let despesas =  bd.pesquisarFiltro(despesa)
+        let listaDespesas = document.getElementById('listaDespesas')
+        listaDespesas.innerHTML = ''
+        despesas.forEach(function(d){
+            let linha =   listaDespesas.insertRow()
+            switch(d.tipo){
+                case '1' : d.tipo = 'Alimentação'
+                case '2' : d.tipo = 'Educação'
+                case '3' : d.tipo = 'Lazer'
+                case '4' : d.tipo = 'Saúde'
+                break
+            }  
+            linha.insertCell(0).innerHTML= `${d.dia}/${d.mes}/${d.ano}`
+            linha.insertCell(1).innerHTML = d.tipo         
+            linha.insertCell(2).innerHTML = d.descricao
+            linha.insertCell(3).innerHTML = d.valor
 
+        })
     }
 
 
