@@ -2,6 +2,7 @@
 	
 	//classe despesas
     class Despesa{
+     
         constructor(ano, mes, dia, tipo, valor, descricao){
            this.ano = ano
            this.mes = mes
@@ -53,11 +54,13 @@
             }
             return despesas            
         }
+
+        pesquisarFiltro(p){
+            console.log(p)
+        }
     }
     //instanciando um novo BD
-    let bd = new Bd();    
-
-
+    let bd = new Bd(); 
 
     //Controller // bean no java 
     function cadastrarDespesa(){
@@ -70,20 +73,27 @@
         let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value);
        
         if(despesa.validarDados()){
-          bd.gravar(despesa);
+          bd.gravar(despesa)
           document.getElementById('modal_titulo').innerHTML  = 'Registro inserido com sucesso!'
           document.getElementById('modal_titulo_div').className = 'modal-header text-success'  
           document.getElementById('msgPadrao').innerHTML = 'Despesa foi cadastrada com sucesso!' 
           document.getElementById('msgButton').className = 'btn btn-success'    
           $('#modalRegistraDespesas').modal('show')
+
+          dia.value = ''
+          mes.value = ''
+          ano.value = ''
+          tipo.value = ''
+          descricao.value = ''
+          valor.value = ''     
+
        }else{    
         document.getElementById('modal_titulo').innerHTML  = 'Erro na inclusão do Registro!'
         document.getElementById('modal_titulo_div').className = 'modal-header text-danged'
         document.getElementById('msgPadrao').innerHTML = 'Erro na gravação! verifique se há campos vazios!'
         document.getElementById('msgButton').className = 'btn btn-danger' 
           $('#modalRegistraDespesas').modal('show')
-       }
-
+       }      
     }
 
     function carregarTodasDespesas(){
@@ -93,7 +103,7 @@
 
         despesas.forEach(function(d){
             let linha =   listaDespesas.insertRow()
-            
+
             switch(d.tipo){
                 case '1' : d.tipo = 'Alimentação'
                 case '2' : d.tipo = 'Educação'
@@ -109,16 +119,19 @@
 
         })
 
-
-
-    //     <tbody id="listaDespesas">
-    //     <tr>
-    //        <td></td>
-    //        <td></td>
-    //        <td></td>
-    //        <td></td>
-    //     </tr>
-    //   </tbody>
     }
+
+    function pesquisarDespesa(){
+        let dia = document.getElementById('dia')
+        let mes = document.getElementById('mes')
+        let ano = document.getElementById('ano')
+        let tipo = document.getElementById('tipo')
+        let descricao = document.getElementById('descricao')
+        let valor = document.getElementById('valor')
+        let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value)
+        bd.pesquisarFiltro(despesa)
+
+    }
+
 
    
