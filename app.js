@@ -40,11 +40,26 @@
            let id =  this.getProximoId() //descobrindo qual será o proximo id e colocando na variável
             localStorage.setItem(id, JSON.stringify(d)) // setando no local storage o novo id com a String(objeto)
             localStorage.setItem('id', id)
-        }    
+        } 
+        
+        listar(){
+            let id = localStorage.getItem('id')
+            let despesas = Array()
+            for(let i =1; i<= id; i++){
+                let despesa  = JSON.parse(localStorage.getItem(i))
+                if(despesa != null){
+                    despesas.push(despesa)
+                }
+            }
+            return despesas            
+        }
     }
-    let bd = new Bd();
-    
-    //fora da classe
+    //instanciando um novo BD
+    let bd = new Bd();    
+
+
+
+    //Controller // bean no java 
     function cadastrarDespesa(){
         let dia = document.getElementById('dia');
         let mes = document.getElementById('mes');
@@ -55,9 +70,23 @@
         let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, valor.value, descricao.value);
        
         if(despesa.validarDados()){
-          bd.gravar(despesa); //interessante que nao importou nada pra usar aqui, apenas chamou com  classe
-          $('#sucessoGravacao').modal('show')
-       }else{
-          $('#erroGravacao').modal('show')
+          bd.gravar(despesa);
+          document.getElementById('modal_titulo').innerHTML  = 'Registro inserido com sucesso!'
+          document.getElementById('modal_titulo_div').className = 'modal-header text-success'  
+          document.getElementById('msgPadrao').innerHTML = 'Despesa foi cadastrada com sucesso!' 
+          document.getElementById('msgButton').className = 'btn btn-success'    
+          $('#modalRegistraDespesas').modal('show')
+       }else{    
+        document.getElementById('modal_titulo').innerHTML  = 'Erro na inclusão do Registro!'
+        document.getElementById('modal_titulo_div').className = 'modal-header text-danged'
+        document.getElementById('msgPadrao').innerHTML = 'Erro na gravação! verifique se há campos vazios!'
+        document.getElementById('msgButton').className = 'btn btn-danger' 
+          $('#modalRegistraDespesas').modal('show')
        }
+
+    }
+
+    function carregarTodasDespesas(){
+        let despesas = Array()
+        despesas = bd.listar()
     }
